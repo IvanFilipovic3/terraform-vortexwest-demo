@@ -1,4 +1,4 @@
-# Terraform vortexwest AWS ECS 
+# Terraform vortexwest demo AWS ECS 
 
 Terraform modules for creating a demo ECS Cluster, networking and realed resources in AWS.
 
