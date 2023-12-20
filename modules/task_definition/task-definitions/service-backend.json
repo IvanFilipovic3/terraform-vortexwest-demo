@@ -1,0 +1,84 @@
+[
+  {
+    "cpu": 512,
+    "memory": 512,
+    "image": "micic/vortexwest:backend",
+    "essential": true,
+    "name": "${global.container_name}",
+    "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {  
+          "awslogs-group": "/ecs/${global.container_name}",
+          "awslogs-region": "${global.region}",
+          "awslogs-stream-prefix": "ecs"
+        }
+      },
+    "command": ["python", "manage.py", "runserver", "0.0.0.0:8000"],  
+    "portMappings": [
+      {
+        "containerPort": 8000,
+        "hostPort": 8000
+      } 
+    ],
+    "environment": [
+      {
+        "name": "POSTGRES_NAME",
+        "value": "${global.db_name}"
+      },
+      {
+        "name": "POSTGRES_USER",
+        "value": "${global.db_username}"
+      },
+      {  
+        "name": "POSTGRES_PASSWORD",
+        "value": "${global.db_password}"
+      },
+      {  
+        "name": "POSTGRES_HOST",
+        "value": "${global.db_endpoint}"
+      },
+      {  
+        "name": "POSTGRES_PORT",
+        "value": "5432"
+      }
+    ]
+  },
+  {
+    "cpu": 256,
+    "memory": 256,
+    "image": "micic/vortexwest:backend",
+    "essential": false,
+    "name": "${global.container_name}-migration",
+    "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {  
+          "awslogs-group": "/ecs/${global.container_name}",
+          "awslogs-region": "${global.region}",
+          "awslogs-stream-prefix": "ecs"
+        }
+      },
+    "command": ["python", "manage.py", "migrate"],  
+    "environment": [
+      {
+        "name": "POSTGRES_NAME",
+        "value": "${global.db_name}"
+      },
+      {
+        "name": "POSTGRES_USER",
+        "value": "${global.db_username}"
+      },
+      {  
+        "name": "POSTGRES_PASSWORD",
+        "value": "${global.db_password}"
+      },
+      {  
+        "name": "POSTGRES_HOST",
+        "value": "${global.db_endpoint}"
+      },
+      {  
+        "name": "POSTGRES_PORT",
+        "value": "5432"
+      }
+    ]
+  }
+]
